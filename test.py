@@ -1,15 +1,46 @@
-#!/usr/bin/python
-import urllib2
-import urllib
+import unittest
+import lm
+import client
+import server
+import multiprocessing
+import json
 
-def send_request(text):
-  params = urllib.urlencode({'text': text})
-  request = urllib2.Request("http://127.0.0.1:8001/", data=params, headers={"Accept": "application/json"})
-  f = urllib2.urlopen(request)
-  print 'send text to server for identification: ', text
-  print 'answer: ', f.read()
+TEST_DATA = {
+    'en': 'how are you doing?',
+    'fr': 'comment allez-vous?',
+    'de': 'wie geht es ihnen?'
+}
 
-send_request('how are you doing?')
-send_request('comment allez-vous?')
-send_request('wie geht es ihnen?')
 
+class TestLanguageModelMethods(unittest.TestCase):
+
+    def test_detect(self):
+        model = lm.LanguageModel()
+        for test_language, test_sentence in TEST_DATA.iteritems():
+            detected_language, score = model.detect(test_sentence)
+            self.assertEqual(detected_language, test_language)
+            self.assertLess(score, 0)
+
+
+class TestServer(unittest.TestCase):
+
+    def setUp(self):
+        self.port = 8001
+        s = server.make_server('', self.port, server.app)
+        self.server_process = multiprocessing.Process(target=s.serve_forever)
+        self.server_process.start()
+
+    def tearDown(self):
+        self.server_process.terminate()
+        self.server_process.join()
+        del(self.server_process)
+
+    def test_server(self):
+
+        for test_language, test_sentence in TEST_DATA.iteritems():
+            ret = client.send_request(test_sentence)
+            detected_language = json.loads(ret)['language']
+            self.assertEqual(detected_language, test_language)
+
+if __name__ == '__main__':
+    unittest.main()
