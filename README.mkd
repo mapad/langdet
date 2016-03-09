@@ -1,1 +1,1 @@
-Language detection using trigrams.
+Server which will detect the language of the text posted by the client. (out of French, English and German).
