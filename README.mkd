@@ -1,1 +1,8 @@
-Server which will detect the language of the text posted by the client. (out of French, English and German).
+Dummy server which will detect the language of the text posted by a client. (out of French, English and German).
+example of use:
+
+    curl -X POST --data "text=devine cette langue" localhost:8001 -H "Accept: application/json"
+    
+will return:
+
+    {"language": "fr"}
