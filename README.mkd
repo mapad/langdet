@@ -1,4 +1,4 @@
-[![Circle CI](https://circleci.com/gh/mapad/langdet.svg?style=svg)](https://circleci.com/gh/mapad/langdet)
+[![Circle CI](https://circleci.com/gh/mapad/langdet.svg?style=svg)](https://circleci.com/gh/mapad/langdet) [![Code Climate](https://codeclimate.com/github/mapad/langdet/badges/gpa.svg)](https://codeclimate.com/github/mapad/langdet)
 
 Dummy server which will detect the language of the text posted by a client. (out of French, English and German).
 example of use:
