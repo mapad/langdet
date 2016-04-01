@@ -1,12 +1,26 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import unittest
 import client
 import server
 import multiprocessing
+import lm
+
+TRAINING_DATA = {
+    'en': 'training',
+    'fr': 'entraînement'}
+
+TEST_DATA = {
+    'en': 'jumping',
+    'fr': 'sportivement'}
 
 class TestServer(unittest.TestCase):
 
     def setUp(self):
+        language_model = lm.LanguageModel()
+        language_model.count()
+        language_model.normalize()
+
         port = 8001
         s = server.make_server('', port, server.app)
         self.server_process = multiprocessing.Process(target=s.serve_forever)

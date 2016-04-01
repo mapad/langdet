@@ -2,13 +2,15 @@
 from collections import Counter
 from collections import defaultdict
 import math
+import pickle
 
 
 class LanguageModel():
     """ Creates a trigram language model """
 
     # this holds several language model for each language
-    LM = defaultdict(Counter)
+    def __init__(self):
+        self.LM = defaultdict(Counter)
 
     def count(self, language, text):
         """ this could be parallelized """
@@ -38,4 +40,7 @@ class LanguageModel():
 
     def save(self, file_name):
         """ save to disk for future usage """
-        raise 'not implemented'
+        pickle.dump(self.LM, file(file_name, 'w'))
+
+    def load(self, file_name):
+        self.LM = pickle.load(file(file_name, 'r'))
